@@ -17,7 +17,7 @@ TL: [José Campos](https://github.com/josecamposhz)
 
 FE: [Francisco D. Molina](https://github.com/TheFranciscoMolina)  
 FE: [Eliecer Calderon](https://github.com/eliecergonzalez2021)  
-FS: [Veronica Caro](https://github.com/vecarope)
+FS: [Veronica Caro](https://github.com/vecarope)  
 FS: [Felipe Gatica L](https://github.com/FelipeGaticaL)
 
 ### Backend
