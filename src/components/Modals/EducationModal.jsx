@@ -22,7 +22,6 @@ const EducationModal = ({ updateEducation, id, data }) => {
           }}
           validationSchema={validateEducation}
           onSubmit={async values => {
-            console.log(values);
             try {
               values['id'] = id;
               await apiClient.put('/users/education', values);

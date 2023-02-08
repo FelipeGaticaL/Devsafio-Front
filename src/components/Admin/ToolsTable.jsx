@@ -1,15 +1,29 @@
 import { UpdateButton, DeleteButton } from './Buttons/Buttons';
 import { useEffect, useState } from 'react';
 import apiClient from '../../services/api.service';
+import { AddTools } from './Modals/AddElement';
+import { EditTools } from './Modals/EditElement';
+import { DeleteTools } from './Modals/DeleteElement';
 
 const ToolsTable = () => {
   const [tools, setTools] = useState(null);
+  
   const getAllTools = async () => {
-    setTools(await apiClient('admin/get-tools'));
+    const data = await apiClient('admin/get-tools');
+    setTools(data.data);
   };
   useEffect(() => {
     getAllTools();
   }, []);
+
+  const updateTools = (values, id) => {
+    setTools(prevState =>
+      prevState.map(e => (e.id === id ? { ...e, ...values } : e))
+    );
+  };
+  const removeTools = id => {
+    setTools(prevState => prevState.filter(element => element.id !== id));
+  };
 
   return (
     <div className="container mx-auto p-12 md:max-w-3xl xl:max-w-screen-lg 2xl:max-w-screen-2xl">
@@ -18,23 +32,7 @@ const ToolsTable = () => {
           Herramientas
         </h1>
         <div className="col-end-8 sm:col-end-6 lg:col-end-6 xl:col-end-7 col-span-1">
-          <button className="btn bg-[#89CFD9] text-[#232323] border-white inline-flex items-center font-light  sm:btn-md btn-md">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth="1.5"
-              stroke="currentColor"
-              className="w-6 h-6"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
-            <span className="hidden sm:block">Agregar</span>
-          </button>
+          <AddTools setTools={setTools} data={tools}/>
         </div>
       </div>
       <table className="flex flex-col w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -50,7 +48,7 @@ const ToolsTable = () => {
         </thead>
         <tbody className="overflow-y-scroll" style={{ maxHeight: '80vh' }}>
           {tools !== null
-            ? tools.data.map((e) => (
+            ? tools.map((e) => (
                 <tr
                   className="flex items-center border-b bg-gray-800 border-gray-700"
                   key={e.id}
@@ -63,10 +61,10 @@ const ToolsTable = () => {
                   </th>
                   <td className="grow sm:px-6 sm:py-4 text-white">{e.name}</td>
                   <td>
-                    <UpdateButton></UpdateButton>
+                  <EditTools updateTools={updateTools} data={e} id={e.id} />
                   </td>
                   <td>
-                    <DeleteButton></DeleteButton>
+                  <DeleteTools removeTools={removeTools} data={e} />
                   </td>
                 </tr>
               ))
